@@ -1,0 +1,14 @@
+{
+  "name": "c444d749d561a0c3",
+  "main": "c444d749d561a0c3@874.js",
+  "version": "874.0.0",
+  "homepage": "https://observablehq.com/d/c444d749d561a0c3",
+  "author": {
+    "name": "circos",
+    "url": "https://observablehq.com/@circos-dv"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}
