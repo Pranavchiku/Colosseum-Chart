@@ -2,7 +2,9 @@
 
 Created by Pranav Goswami (B20CS016) & Deep Patel (B20CS087)
 
-https://observablehq.com/d/c444d749d561a0c3@874
+Deployed webpage: [circos-d3](https://pranavchiku.github.io/circos-d3/)
+
+Observable notebook: [Circos Plot](https://observablehq.com/d/c444d749d561a0c3@874)
 
 View this notebook in your browser by running a web server in this folder. For
 example:
