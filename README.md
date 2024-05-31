@@ -2,9 +2,9 @@
 
 Created by Pranav Goswami (B20CS016) & Deep Patel (B20CS087)
 
-Deployed webpage: [circos-d3](https://pranavchiku.github.io/circos-d3/)
+Deployed webpage: [Colosseum-Chart]([https://pranavchiku.github.io/circos-d3/](https://pranavchiku.github.io/Colosseum-Chart/))
 
-Observable notebook: [Circos Plot](https://observablehq.com/d/c444d749d561a0c3@874)
+Observable notebook: [Colosseum-Chart](https://observablehq.com/d/c444d749d561a0c3@874)
 
 View this notebook in your browser by running a web server in this folder. For
 example:
