@@ -1,4 +1,4 @@
-# Circos Plot
+# Colosseum-Chart
 
 Created by Pranav Goswami (B20CS016) & Deep Patel (B20CS087)
 
