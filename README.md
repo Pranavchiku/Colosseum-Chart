@@ -2,7 +2,7 @@
 
 Created by Pranav Goswami (B20CS016) & Deep Patel (B20CS087)
 
-Deployed webpage: [Colosseum-Chart]([https://pranavchiku.github.io/circos-d3/](https://pranavchiku.github.io/Colosseum-Chart/))
+Deployed webpage: [Colosseum-Chart](https://pranavchiku.github.io/Colosseum-Chart/)
 
 Observable notebook: [Colosseum-Chart](https://observablehq.com/d/c444d749d561a0c3@874)
 
