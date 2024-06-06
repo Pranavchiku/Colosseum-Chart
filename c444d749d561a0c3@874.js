@@ -70,8 +70,8 @@ function ColosseumChart(
     const columnName = getColumnName(data);
 
     var colorScale = d3.scaleLinear()
-      .domain([-2, 0, 2])  // Input values
-      .range(["red", "white", "blue"]); // Output colors
+      .domain([-3, 0, 3])  // Input values
+      .range(["blue", "white", "red"]); // Output colors
   
     // Function to handle zoom
     function zoomIn(scaleFactor) {
@@ -166,8 +166,10 @@ function ColosseumChart(
                 const curElemValue = data[curRow][columnName[curLayerIndex]];
                 curRow = (curRow + 1);
   
-                var colorConfig = curElemValue > 0 ? 'blue' : 
-                                  curElemValue < 0 ? 'red' : 'white';
+                // var colorConfig = curElemValue > 0 ? 'blue' : 
+                //                   curElemValue < 0 ? 'red' : 'white';
+
+                var colorConfig = colorScale(curElemValue);
           
                 svg.append("path")
                   .attr("transform", "translate(100,100)")
