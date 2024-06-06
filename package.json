@@ -4,8 +4,8 @@
   "version": "874.0.0",
   "homepage": "https://observablehq.com/d/c444d749d561a0c3",
   "author": {
-    "name": "circos",
-    "url": "https://observablehq.com/@circos-dv"
+    "name": "Colosseum",
+    "url": "https://observablehq.com/@Colosseum-dv"
   },
   "type": "module",
   "peerDependencies": {

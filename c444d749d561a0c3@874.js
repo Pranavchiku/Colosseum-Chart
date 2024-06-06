@@ -1,7 +1,7 @@
 import define1 from "./8d271c22db968ab0@160.js";
 
 function _1(md){return(
-md`# Circos Plot
+md`# Colosseum Plot
 Created by: Pranav Goswami (B20CS016) & Deep Patel (B20CS087)
 ---
 
@@ -9,11 +9,11 @@ Upload any dataset and update parameters to visualise dataset.`
 )}
 
 function _sampledata(FileAttachment){return(
-FileAttachment("circos.csv").csv()
+FileAttachment("Colosseum.csv").csv()
 )}
 
 function _3(__query,FileAttachment,invalidation){return(
-__query.sql(FileAttachment("circos.csv"),invalidation)`select * from "circos.csv"`
+__query.sql(FileAttachment("Colosseum.csv"),invalidation)`select * from "Colosseum.csv"`
 )}
 
 function _4(md){return(
@@ -24,7 +24,7 @@ function _inputParameters(Inputs){return(
 Inputs.form({
   concentricRing: Inputs.range([1, 5], {step: 1, label: "concentric rings", value: 2}),
   numLayers: Inputs.range([1, 5], {step: 1, label: "number of layers", value: 2}),
-  file: Inputs.file({label: "CSV file", accept: ".csv", required: true, value: "circos-small.csv"}),
+  file: Inputs.file({label: "CSV file", accept: ".csv", required: true, value: "Colosseum-small.csv"}),
   gap: Inputs.range([5, 40], {step: 1, label: "vertical gap", value: 20}),
   innerGap: Inputs.range([10, 500], {step: 1, label: "insert gap between concentric circles", value: 20})
 })
@@ -35,11 +35,11 @@ inputParameters.file === undefined ? sampledata: inputParameters.file.csv({typed
 )}
 
 function _7(md){return(
-md`# Circos plot`
+md`# Colosseum plot`
 )}
 
-function _8(circosPlot,inputData,calculateNumSectors,inputParameters,calculateNumberOfDatapoints,getUniqueCategories){return(
-circosPlot(
+function _8(ColosseumPlot,inputData,calculateNumSectors,inputParameters,calculateNumberOfDatapoints,getUniqueCategories){return(
+ColosseumPlot(
   inputData,
   calculateNumSectors(inputData),
   inputParameters.concentricRing, inputParameters.numLayers,
@@ -52,8 +52,8 @@ circosPlot(
 )
 )}
 
-function _circosPlot(d3,getColumnName){return(
-function circosPlot(
+function _ColosseumPlot(d3,getColumnName){return(
+function ColosseumPlot(
     data = data,
     numSectors,
     numConcentricCircles,
@@ -346,7 +346,7 @@ export default function define(runtime, observer) {
   const main = runtime.module();
   function toString() { return this.url; }
   const fileAttachments = new Map([
-    ["circos.csv", {url: new URL("./files/d98162818ad216df1e6b783bf4b9e658acc7b2759f888d9382cbd2e44f39649c4bf854b8d3f6d6e978607f22a47e56cd0b9c0e46fe7edd07ea8a68d6103221b0.csv", import.meta.url), mimeType: "text/csv", toString}]
+    ["Colosseum.csv", {url: new URL("./files/d98162818ad216df1e6b783bf4b9e658acc7b2759f888d9382cbd2e44f39649c4bf854b8d3f6d6e978607f22a47e56cd0b9c0e46fe7edd07ea8a68d6103221b0.csv", import.meta.url), mimeType: "text/csv", toString}]
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(["md"], _1);
@@ -357,8 +357,8 @@ export default function define(runtime, observer) {
   main.variable(observer("inputParameters")).define("inputParameters", ["Generators", "viewof inputParameters"], (G, _) => G.input(_));
   main.variable(observer("inputData")).define("inputData", ["inputParameters","sampledata"], _inputData);
   main.variable(observer()).define(["md"], _7);
-  main.variable(observer()).define(["circosPlot","inputData","calculateNumSectors","inputParameters","calculateNumberOfDatapoints","getUniqueCategories"], _8);
-  main.variable(observer("circosPlot")).define("circosPlot", ["d3","getColumnName"], _circosPlot);
+  main.variable(observer()).define(["ColosseumPlot","inputData","calculateNumSectors","inputParameters","calculateNumberOfDatapoints","getUniqueCategories"], _8);
+  main.variable(observer("ColosseumPlot")).define("ColosseumPlot", ["d3","getColumnName"], _ColosseumPlot);
   main.variable(observer("calculateNumSectors")).define("calculateNumSectors", _calculateNumSectors);
   main.variable(observer("getUniqueCategories")).define("getUniqueCategories", _getUniqueCategories);
   main.variable(observer()).define(["calculateNumberOfDatapoints","sampledata","getUniqueCategories"], _12);
