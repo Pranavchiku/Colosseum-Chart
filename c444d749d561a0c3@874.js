@@ -1,7 +1,7 @@
 import define1 from "./8d271c22db968ab0@160.js";
 
 function _1(md){return(
-md`# Colosseum Plot
+md`# Colosseum Chart
 Created by: Pranav Goswami (B20CS016) & Deep Patel (B20CS087)
 ---
 
@@ -35,11 +35,11 @@ inputParameters.file === undefined ? sampledata: inputParameters.file.csv({typed
 )}
 
 function _7(md){return(
-md`# Colosseum plot`
+md`# Colosseum Chart`
 )}
 
-function _8(ColosseumPlot,inputData,calculateNumSectors,inputParameters,calculateNumberOfDatapoints,getUniqueCategories){return(
-ColosseumPlot(
+function _8(ColosseumChart,inputData,calculateNumSectors,inputParameters,calculateNumberOfDatapoints,getUniqueCategories){return(
+ColosseumChart(
   inputData,
   calculateNumSectors(inputData),
   inputParameters.concentricRing, inputParameters.numLayers,
@@ -52,8 +52,8 @@ ColosseumPlot(
 )
 )}
 
-function _ColosseumPlot(d3,getColumnName){return(
-function ColosseumPlot(
+function _ColosseumChart(d3,getColumnName){return(
+function ColosseumChart(
     data = data,
     numSectors,
     numConcentricCircles,
@@ -161,7 +161,7 @@ function ColosseumPlot(
                 var s = 1;
   
                 const category = data[curRow].Category;
-                const geneId = data[curRow].GeneID;
+                const ID = data[curRow].ID;
                 const cName = columnName[curLayerIndex];
                 const curElemValue = data[curRow][columnName[curLayerIndex]];
                 curRow = (curRow + 1);
@@ -207,7 +207,7 @@ function ColosseumPlot(
                     svg.append("text")
                         .attr("x", width/3 + 50)  // Adjust x position to center the text horizontally
                         .attr("y", -height/3 + 20) // Adjust y position to center the text vertically
-                        .text(geneId)
+                        .text(ID)
                         .attr("text-anchor", "middle")
                         .attr("alignment-baseline", "middle")
                         .style("font-size", "8px")
@@ -357,8 +357,8 @@ export default function define(runtime, observer) {
   main.variable(observer("inputParameters")).define("inputParameters", ["Generators", "viewof inputParameters"], (G, _) => G.input(_));
   main.variable(observer("inputData")).define("inputData", ["inputParameters","sampledata"], _inputData);
   main.variable(observer()).define(["md"], _7);
-  main.variable(observer()).define(["ColosseumPlot","inputData","calculateNumSectors","inputParameters","calculateNumberOfDatapoints","getUniqueCategories"], _8);
-  main.variable(observer("ColosseumPlot")).define("ColosseumPlot", ["d3","getColumnName"], _ColosseumPlot);
+  main.variable(observer()).define(["ColosseumChart","inputData","calculateNumSectors","inputParameters","calculateNumberOfDatapoints","getUniqueCategories"], _8);
+  main.variable(observer("ColosseumChart")).define("ColosseumChart", ["d3","getColumnName"], _ColosseumChart);
   main.variable(observer("calculateNumSectors")).define("calculateNumSectors", _calculateNumSectors);
   main.variable(observer("getUniqueCategories")).define("getUniqueCategories", _getUniqueCategories);
   main.variable(observer()).define(["calculateNumberOfDatapoints","sampledata","getUniqueCategories"], _12);
