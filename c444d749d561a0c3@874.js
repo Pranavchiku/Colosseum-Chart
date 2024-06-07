@@ -181,9 +181,9 @@ function ColosseumChart(
                   .attr("fill-opacity", 0.8)
                   .attr('transform', 'translate(0, 0)')
                   .on('mouseover', function(d, i) {
-                    d3.select(this).transition()
-                      .duration('50')
-                      .attr('opacity', '1');
+                    // d3.select(this).transition()
+                    //   .duration('50')
+                    //   .attr('opacity', '1');
     
                     // Append rectangle
                     svg.append('rect')
@@ -244,8 +244,8 @@ function ColosseumChart(
                     }
                   })
                   .on('mouseout', function(d, i) {
-                    d3.select(this).transition()
-                      .attr('opacity', '0.8');
+                    // d3.select(this).transition()
+                    //   .attr('opacity', '0.8');
                     svg.selectAll("text").remove();
                     svg.selectAll("rect").remove();
                   });
