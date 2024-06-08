@@ -2,10 +2,7 @@ import define1 from "./8d271c22db968ab0@160.js";
 
 function _1(md){return(
 md`# Colosseum Chart
-Created by: Pranav Goswami (B20CS016) & Deep Patel (B20CS087)
----
-
-Upload any dataset and update parameters to visualise dataset.`
+`
 )}
 
 function _sampledata(FileAttachment){return(
@@ -20,15 +17,18 @@ function _4(md){return(
 md`# Input Parameters`
 )}
 
-function _inputParameters(Inputs){return(
-Inputs.form({
-  concentricRing: Inputs.range([1, 5], {step: 1, label: "concentric rings", value: 2}),
-  numLayers: Inputs.range([1, 5], {step: 1, label: "number of layers", value: 2}),
-  file: Inputs.file({label: "CSV file", accept: ".csv", required: true, value: "Colosseum-small.csv"}),
-  gap: Inputs.range([5, 40], {step: 1, label: "vertical gap", value: 20}),
-  innerGap: Inputs.range([10, 500], {step: 1, label: "insert gap between concentric circles", value: 20})
-})
-)}
+function _inputParameters(Inputs) {
+  return Inputs.form({
+    concentricRing: Inputs.range([1, 5], {step: 1, label: "concentric rings", value: 2}),
+    numLayers: Inputs.range([1, 5], {step: 1, label: "number of layers", value: 2}),
+    file: Inputs.file({label: "CSV file", accept: ".csv", required: true}),
+    gap: Inputs.range([5, 40], {step: 1, label: "vertical gap", value: 20}),
+    innerGap: Inputs.range([10, 500], {step: 1, label: "insert gap between concentric circles", value: 20}),
+    colorGradient: Inputs.select(["blue,white,red", "green,white,red", "custom"], {label: "Color gradient", value: "blue,white,red"}),
+    customScale: Inputs.text({label: "Custom color scale (comma-separated values)", placeholder: "e.g., -3,0,3", value: "-3,0,3"})
+  });
+}
+
 
 function _inputData(inputParameters,sampledata){return(
 inputParameters.file === undefined ? sampledata: inputParameters.file.csv({typed: true})
@@ -48,9 +48,43 @@ ColosseumChart(
   inputParameters.innerGap,
   640,
   600,
-  {top: 20, right: 30, bottom: 30, left: 40}
+  {top: 20, right: 30, bottom: 30, left: 40},
+  // d3.scaleOrdinal(d3.quantize(d3.interpolateHcl("#fafa6e", "#2A4858"), 10)),
+  inputParameters.colorGradient,
+  inputParameters.customScale,
 )
 )}
+
+// function updateColorScale(parameters) {
+//   const { colorGradient, customScale } = parameters;
+
+//   let colorDomain;
+//   if (colorGradient === "custom") {
+//     colorDomain = customScale.split(",").map(Number);
+//   } else {
+//     colorDomain = [-3, 0, 3];
+//   }
+
+//   let colorRange;
+//   switch (colorGradient) {
+//     case "blue-white-red":
+//       colorRange = ["blue", "white", "red"];
+//       break;
+//     case "green-white-red":
+//       colorRange = ["green", "white", "red"];
+//       break;
+//     case "custom":
+//       // Define your custom colors here if needed
+//       colorRange = ["blue", "white", "red"];
+//       break;
+//     default:
+//       colorRange = ["blue", "white", "red"];
+//   }
+
+//   return {colorDomain, colorRange};
+// }
+
+
 
 function _ColosseumChart(d3,getColumnName){return(
 function ColosseumChart(
@@ -64,14 +98,23 @@ function ColosseumChart(
     width = 640,
     height = 600,
     margin = {top: 20, right: 30, bottom: 30, left: 40},
-    color = d3.scaleOrdinal(d3.quantize(d3.interpolateHcl("#fafa6e", "#2A4858"), 10)),
+    // color = d3.scaleOrdinal(d3.quantize(d3.interpolateHcl("#fafa6e", "#2A4858"), 10)),
+    colorGradient,
+    customScale,
+
 ) {
 
     const columnName = getColumnName(data);
 
+    // var colorScale = d3.scaleLinear()
+    //   .domain([-3, 0, 3])  // Input values
+    //   .range(["blue", "white", "red"]); // Output colors
+
+
     var colorScale = d3.scaleLinear()
-      .domain([-3, 0, 3])  // Input values
-      .range(["blue", "white", "red"]); // Output colors
+      .domain(customScale.split(",").map(Number))  // Input values
+      .range(colorGradient.split(",")); // Output colors
+
   
     // Function to handle zoom
     function zoomIn(scaleFactor) {
@@ -146,10 +189,7 @@ function ColosseumChart(
     .style("fill", "black")
     .text(uniqueCategories[arc % numCategories]);
 }
-
-        
-        
-        
+       
         else {
           for ( var j = 0; j < radiusStep; j++ ) {
               const nestedInnerRadius = globalInnerRadius + j * gap;
@@ -213,36 +253,46 @@ function ColosseumChart(
                     .attr("y2", "0%");
 
                 // Add color stops to the gradient
+
+                var color1 = colorGradient.split(",")[0]; 
+                var color2 = colorGradient.split(",")[1];
+                var color3 = colorGradient.split(",")[2];
+
                 gradient.append("stop")
                     .attr("offset", "0%")
-                    .attr("stop-color", "blue");
+                    .attr("stop-color", color1.toString());
 
                 gradient.append("stop")
                     .attr("offset", "50%")
-                    .attr("stop-color", "white");
+                    .attr("stop-color", color2);
 
                 gradient.append("stop")
                     .attr("offset", "100%")
-                    .attr("stop-color", "red");
+                    .attr("stop-color", color3);
 
                 // Add text indicating the range
+                
+                var value1 = customScale.split(",")[0];
+                var value2 = customScale.split(",")[1];
+                var value3 = customScale.split(",")[2];
+
                 svg.append("text")
                 .attr("x", -25)
                 .attr("y", 16)
                 .style("font-size", "5px")
-                .text("-2");
+                .text(value1);
 
                 svg.append("text")
                 .attr("x", 0)
                 .attr("y", 16)
                 .style("font-size", "5px")
-                .text("0");
+                .text(value2);
 
                 svg.append("text")
                 .attr("x", 25)
                 .attr("y", 16)
                 .style("font-size", "5px")
-                .text("2")
+                .text(value3)
                 .style("text-anchor", "end");
 
                 svg.append("text")
