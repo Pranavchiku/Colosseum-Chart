@@ -24,7 +24,7 @@ function _inputParameters(Inputs) {
     file: Inputs.file({label: "CSV file", accept: ".csv", required: true}),
     gap: Inputs.range([5, 40], {step: 1, label: "vertical gap", value: 20}),
     innerGap: Inputs.range([10, 500], {step: 1, label: "insert gap between concentric circles", value: 20}),
-    colorGradient: Inputs.select(["blue,white,red", "green,white,red", "custom"], {label: "Color gradient", value: "blue,white,red"}),
+    colorGradient: Inputs.select(["blue,white,red", "green,white,red","white,red","white,blue","white,green","red,green","red,blue","blue,red","blue,orange", "custom"], {label: "Color gradient", value: "blue,white,red"}),
     customScale: Inputs.text({label: "Custom color scale (comma-separated values)", placeholder: "e.g., -3,0,3", value: "-3,0,3"})
   });
 }
@@ -135,6 +135,10 @@ function ColosseumChart(
     var prevEndAngle = 2 * Math.PI * numberOfDatapoints[0] / data.length;
 
     var prevOuterRadius = innerGap;
+
+    if(prevOuterRadius <= 20){
+        prevOuterRadius = 20;
+    }
   
     for ( var cc = 0; cc < numConcentricCircles + 1; cc++ ) {
       // const globalInnerRadius = ( 1 + cc ) * 40 * numLayers;
@@ -204,15 +208,16 @@ function ColosseumChart(
   const textOffset = 1;
 
             svg.append("text")
-            .attr("dy", -8) //Move the text down
+            .attr("dy", "-"+`${(gap-2)/2}`) //Move the text down
             .append("textPath")
             .attr("xlink:href", function(d,i){return "#donutArc"+`${arc}`;})//`#${arcId}`)
     .attr("text-anchor", "middle") // Center the text
     //.attr("startOffset", `${textOffset * 20}%`) // Start text from the middle of the path
     .attr("startOffset", "50%") // Start text from the middle of the path
-    .style("font-size", "8px")
+    .style("font-size", `${(gap-2)/2}`+"px")
     //.attr('dy', '10')
     .style("fill", "black")
+    .style("text-transform", "capitalize")
     .text(uniqueCategories[arc % numCategories]);
 }
         else {
@@ -279,6 +284,9 @@ function ColosseumChart(
 
                 // Add color stops to the gradient
 
+                var colors = colorGradient.split(",")
+                  if(colors.length == 3){
+
                 var color1 = colorGradient.split(",")[0]; 
                 var color2 = colorGradient.split(",")[1];
                 var color3 = colorGradient.split(",")[2];
@@ -320,11 +328,42 @@ function ColosseumChart(
                 .text(value3)
                 .style("text-anchor", "end");
 
+                  } else {
+
+                var color1 = colorGradient.split(",")[0]; 
+                var color2 = colorGradient.split(",")[1];
+
+                gradient.append("stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", color1.toString());
+
+                gradient.append("stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", color2);
+
+                // Add text indicating the range
+                
+                var value1 = customScale.split(",")[0];
+                var value2 = customScale.split(",")[1];
+
                 svg.append("text")
-                .attr("x", 22)
+                .attr("x", -25)
+                .attr("y", 16)
+                .style("font-size", "5px")
+                .text(value1);
+
+                svg.append("text")
+                .attr("x", 25)
+                .attr("y", 16)
+                .style("font-size", "5px")
+                .text(value2)
+                .style("text-anchor", "end");
+            }
+                svg.append("text")
+                .attr("x", 18)
                 .attr("y", -15)
                 .style("font-size", "8px")
-                .text("log FC scale")
+                .text("Color Map")
                 .style("text-anchor", "end");
 
           
