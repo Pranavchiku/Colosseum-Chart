@@ -111,23 +111,46 @@ function ColosseumChart(
 
         cumSumOfDatapoints += arc === 0 ? 0 : numberOfDatapoints[arc - 1]; 
 
-        if ( cc === numConcentricCircles ) {
-          const nestedArc1 = d3.arc()
-            .innerRadius(prevOuterRadius + gap)
-            .outerRadius(prevOuterRadius + 2 * gap)
-            .startAngle(globalStartAngle)
-            .endAngle(globalStartAngle - angle + (angle / numberOfDatapoints[arc]) / 2);
+        if (cc === numConcentricCircles) {
+  const nestedArc1 = d3.arc()
+    .innerRadius(prevOuterRadius + gap)
+    .outerRadius(prevOuterRadius + 2 * gap)
+    .startAngle(globalStartAngle)
+    .endAngle(globalStartAngle - angle + (angle / numberOfDatapoints[arc]) / 2);
 
-          prevEndAngle = globalStartAngle - angle;
+  prevEndAngle = globalStartAngle - angle;
 
-          svg.append("path")
-            .attr("transform", "translate(100,100)")
-            .attr("d", nestedArc1).style('stroke', 'black')
-            .style('stroke-width', 0.2)
-            .attr("fill", 'white')
-          .attr('transform', 'translate(0, 0)');
+  const arcId = `arc${cc}-${arc}`; // Assign a unique ID to each arc path
 
-        } else {
+  const arcPath = svg.append("path")
+    .attr("id", arcId) // Use the unique ID
+    .attr("transform", "translate(100,100)")
+    .attr("d", nestedArc1)
+    .style('stroke', 'red')
+    .style('stroke-width', 0.2)
+    .attr("fill", 'white')
+    .attr('transform', 'translate(0, 0)');
+
+  const categories = data.map(d => d.Category);
+  const uniqueCategories = [...new Set(categories)];
+  const numCategories = uniqueCategories.length;
+
+  // Add the category text along the path, starting from the middle
+  const textOffset = 1;
+  svg.append("text")
+    .append("textPath")
+    .attr("xlink:href", `#${arcId}`)
+    .attr("startOffset", `${textOffset * 20}%`) // Start text from the middle of the path
+    .attr("text-anchor", "middle") // Center the text
+    .style("font-size", "5px")
+    .style("fill", "black")
+    .text(uniqueCategories[arc % numCategories]);
+}
+
+        
+        
+        
+        else {
           for ( var j = 0; j < radiusStep; j++ ) {
               const nestedInnerRadius = globalInnerRadius + j * gap;
               const nestedOuterRadius = globalInnerRadius + (j + 1) * (gap);
@@ -170,6 +193,65 @@ function ColosseumChart(
                 //                   curElemValue < 0 ? 'red' : 'white';
 
                 var colorConfig = colorScale(curElemValue);
+
+                const legend = svg.append('rect')
+                    .attr("x", -25)
+                    .attr("y", -12.5)
+                    .attr("width", 50)
+                    .attr("height", 18)
+                    .style("stroke", "black")
+                    .style('stroke-width', 0.2)
+                    .attr("fill", "url(#color-gradient)");
+
+                // Define the gradient
+                const gradient = svg.append("defs")
+                    .append("linearGradient")
+                    .attr("id", "color-gradient")
+                    .attr("x1", "0%")
+                    .attr("y1", "0%")
+                    .attr("x2", "100%")
+                    .attr("y2", "0%");
+
+                // Add color stops to the gradient
+                gradient.append("stop")
+                    .attr("offset", "0%")
+                    .attr("stop-color", "blue");
+
+                gradient.append("stop")
+                    .attr("offset", "50%")
+                    .attr("stop-color", "white");
+
+                gradient.append("stop")
+                    .attr("offset", "100%")
+                    .attr("stop-color", "red");
+
+                // Add text indicating the range
+                svg.append("text")
+                .attr("x", -25)
+                .attr("y", 16)
+                .style("font-size", "5px")
+                .text("-2");
+
+                svg.append("text")
+                .attr("x", 0)
+                .attr("y", 16)
+                .style("font-size", "5px")
+                .text("0");
+
+                svg.append("text")
+                .attr("x", 25)
+                .attr("y", 16)
+                .style("font-size", "5px")
+                .text("2")
+                .style("text-anchor", "end");
+
+                svg.append("text")
+                .attr("x", 22)
+                .attr("y", -15)
+                .style("font-size", "8px")
+                .text("log FC scale")
+                .style("text-anchor", "end");
+
           
                 svg.append("path")
                   .attr("transform", "translate(100,100)")
@@ -242,13 +324,13 @@ function ColosseumChart(
                       zoomIn.call(this, 2);
                       s = 1;
                     }
-                  })
-                  .on('mouseout', function(d, i) {
-                    // d3.select(this).transition()
-                    //   .attr('opacity', '0.8');
-                    svg.selectAll("text").remove();
-                    svg.selectAll("rect").remove();
                   });
+                  // .on('mouseout', function(d, i) {
+                  //   // d3.select(this).transition()
+                  //   //   .attr('opacity', '0.8');
+                  //   svg.selectAll("text").remove();
+                  //   svg.selectAll("rect").remove();
+                  // });
               }
           }
         }
