@@ -122,14 +122,36 @@ function ColosseumChart(
 
   const arcId = `arc${cc}-${arc}`; // Assign a unique ID to each arc path
 
+
   const arcPath = svg.append("path")
     .attr("id", arcId) // Use the unique ID
+    .attr("class", "node-arc")
     .attr("transform", "translate(100,100)")
     .attr("d", nestedArc1)
     .style('stroke', 'red')
     .style('stroke-width', 0.2)
     .attr("fill", 'white')
-    .attr('transform', 'translate(0, 0)');
+    .attr('transform', 'translate(0, 0)')
+    .each(function(d,i) {
+        //A regular expression that captures all in between the start of a string
+        //(denoted by ^) and the first capital letter L
+        var firstArcSection = /(^.+?)L/;
+
+        //The [1] gives back the expression between the () (thus not the L as well)
+        //which is exactly the arc statement
+        var newArc = firstArcSection.exec( d3.select(this).attr("d") )[1];
+        //Replace all the comma's so that IE can handle it -_-
+        //The g after the / is a modifier that "find all matches rather than
+        //stopping after the first match"
+        newArc = newArc.replace(/,/g , " ");
+
+        //Create a new invisible arc that the text can flow along
+        svg.append("path")
+            .attr("class", "hiddenDonutArcs")
+            .attr("id", "donutArc"+`${arc}`)
+            .attr("d", newArc)
+            .style("fill", "none");
+    });
 
   const categories = data.map(d => d.Category);
   const uniqueCategories = [...new Set(categories)];
@@ -137,19 +159,19 @@ function ColosseumChart(
 
   // Add the category text along the path, starting from the middle
   const textOffset = 1;
-  svg.append("text")
-    .append("textPath")
-    .attr("xlink:href", `#${arcId}`)
-    .attr("startOffset", `${textOffset * 20}%`) // Start text from the middle of the path
+
+            svg.append("text")
+            .attr("dy", -8) //Move the text down
+            .append("textPath")
+            .attr("xlink:href", function(d,i){return "#donutArc"+`${arc}`;})//`#${arcId}`)
     .attr("text-anchor", "middle") // Center the text
-    .style("font-size", "5px")
+    //.attr("startOffset", `${textOffset * 20}%`) // Start text from the middle of the path
+    .attr("startOffset", "50%") // Start text from the middle of the path
+    .style("font-size", "8px")
+    //.attr('dy', '10')
     .style("fill", "black")
     .text(uniqueCategories[arc % numCategories]);
 }
-
-        
-        
-        
         else {
           for ( var j = 0; j < radiusStep; j++ ) {
               const nestedInnerRadius = globalInnerRadius + j * gap;
